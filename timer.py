@@ -8,7 +8,7 @@ class Timer():
 
     def studytimer(self):
         totalSeconds = self.m * 60 - 1
-        print("Time to focus!", end="")
+        print("\rTime to focus!", end="")
         t.sleep(1)
         while totalSeconds >= 0:
             timeleft = dt.timedelta(seconds = totalSeconds)
