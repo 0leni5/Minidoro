@@ -9,13 +9,13 @@ class Timer():
 
     def studytimer(self):
         totalSeconds = self.studyTime
-        sys.stdout.write("\rTime to focus!", end="")
+        sys.stdout.write("\rTime to focus!", end="") #ta sama błędna komenda
         sys.stdout.flush()
         t.sleep(1)
         while totalSeconds >= 0:
             timeleft = dt.timedelta(seconds = totalSeconds)
             display = f"\r{timeleft}"
-            sys.stdout.write(display, end="")
+            sys.stdout.write(display, end="") #ta komenda chyba nie jest odpowiednia, wywala error
             sys.stdout.flush()
             t.sleep(1)
             totalSeconds -= 1
@@ -29,7 +29,7 @@ class Timer():
         while totalSeconds >= 0:
             timeleft = dt.timedelta(seconds=totalSeconds)
             display = f"\r{timeleft}"
-            sys.stdout.write(display, end="")
+            sys.stdout.write(display, end="") #tak samo tutaj
             sys.stdout.flush()
             t.sleep(1)
             totalSeconds -= 1
