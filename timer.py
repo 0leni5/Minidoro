@@ -1,38 +1,61 @@
-import time as t
 import datetime as dt
+import threading
+import tkinter as tk
 from playsound import playsound as ps
 
-class Timer():
-    def __init__(self, m, b):
-        self.studyTime = m*60 - 1
-        self.breakTime = b*60 - 1
+class TimerApp:
+    def __init__(self, root, study_time, break_time):
+        self.root = root
+        self.study_time = study_time * 60
+        self.break_time = break_time * 60
+        self.time_left = self.study_time
+        self.on_break = False
+        self.running = False
         self.round = 0
 
-    def studytimer(self):
-        totalSeconds = self.studyTime
-        self.round += 1
-        print("\rTime to focus!", end="")
-        t.sleep(1)
-        print(f"\rRound {self.round}")
-        while totalSeconds >= 0:
-            timeleft = dt.timedelta(seconds = totalSeconds)
-            display = f"\r{timeleft}"
-            print(display, end="")
-            t.sleep(1)
-            totalSeconds -= 1
-        ps('beepshort.wav')
-        self.breaktimer()
+        # UI Elements
+        # self.label = tk.Label(root, text="Pomodoro Timer", font=("Arial", 20))
+        # self.label.pack(pady=10)
 
-    def breaktimer(self):
-        totalSeconds = self.breakTime
-        print("\rBreak!", end="")
-        t.sleep(1)
-        while totalSeconds >= 0:
-            timeleft = dt.timedelta(seconds=totalSeconds)
-            display = f"\r{timeleft}"
-            print(display, end="")
-            t.sleep(1)
-            totalSeconds -= 1
-        ps('beepshort.wav')
-        self.studytimer()
+        self.timer_display = tk.Label(root, text="00:00:00", font=("Arial", 30), fg = 'white', bg = '#1c3d25')
+        self.timer_display.pack(pady=10)
 
+        self.start_button = tk.Button(root, text="Start", command=self.start_timer, font=("Arial", 14))
+        self.start_button.pack(side=tk.LEFT, padx=10)
+
+        self.stop_button = tk.Button(root, text="Stop", command=self.stop_timer, font=("Arial", 14))
+        self.stop_button.pack(side=tk.RIGHT, padx=10)
+
+    def start_timer(self):
+        if not self.running:
+            self.running = True
+            self.update_timer()
+
+    def stop_timer(self):
+        self.running = False
+
+    def update_timer(self):
+        if self.running:
+            if self.time_left > 0:
+                time_display = str(dt.timedelta(seconds=self.time_left))
+                self.timer_display.config(text=time_display)
+                self.time_left -= 1
+                self.root.after(1000, self.update_timer)
+            else:
+                self.play_sound()
+                self.switch_mode()
+
+    def switch_mode(self):
+        if self.on_break:
+            self.round += 1
+            self.label.config(text=f"Round {self.round} - Focus!")
+            self.time_left = self.study_time
+        else:
+            self.label.config(text="Break Time!")
+            self.time_left = self.break_time
+
+        self.on_break = not self.on_break
+        self.update_timer()
+
+    def play_sound(self):
+        threading.Thread(target=lambda: ps("beepshort.wav"), daemon=True).start()
