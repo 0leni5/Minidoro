@@ -8,7 +8,7 @@ class TimerApp:
         self.root = tk.Tk()
         self.root.title("Minidoro")
         self.root.config(bg='#e83a3a')
-        # self.root.geometry("200x160")
+        self.root.geometry("200x250")
         self.study_time = study_time * 60
         self.break_time = break_time * 60
         self.time_left = self.study_time
@@ -17,19 +17,19 @@ class TimerApp:
         self.round = 1
 
         # UI Elements
-        self.mainLabel = tk.Label(self.root, text="Pomodoro Timer", font=("Arial", 10), bg='#e83a3a', fg="white")
+        self.mainLabel = tk.Label(self.root, text="Pomodoro Timer", font=("JetBrainsMono NFM Regular", 15), bg='#e83a3a', fg="white")
         self.mainLabel.pack(pady=10)
 
-        self.timer_display = tk.Label(self.root, text="00:00:00", font=("Arial", 30), fg = 'white', bg = '#e83a3a')
+        self.timer_display = tk.Label(self.root, text="00:00:00", font=("digital-7", 30), fg = 'white', bg = '#e83a3a')
         self.timer_display.pack(pady=10)
 
-        self.roundLabel = tk.Label(self.root, text=f"Round {self.round}", font=("Arial", 10), bg='#e83a3a', fg="white")
+        self.roundLabel = tk.Label(self.root, text=f"Round {self.round}", font=("JetBrainsMono NFM Regular", 15), bg='#e83a3a', fg="white")
         self.roundLabel.pack(pady=10)
 
-        self.start_button = tk.Button(self.root, text="Start", command=self.start_timer, font=("Arial", 14))
+        self.start_button = tk.Button(self.root, text="Start", command=self.start_timer, font=("JetBrainsMono NFM Regular", 10))
         self.start_button.pack(side=tk.LEFT, padx=10, pady=10)
 
-        self.stop_button = tk.Button(self.root, text="Stop", command=self.stop_timer, font=("Arial", 14))
+        self.stop_button = tk.Button(self.root, text="Stop", command=self.stop_timer, font=("JetBrainsMono NFM Regular", 10))
         self.stop_button.pack(side=tk.RIGHT, padx=10, pady=10)
 
         self.update_display()
