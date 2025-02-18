@@ -4,8 +4,11 @@ import tkinter as tk
 from playsound import playsound as ps
 
 class TimerApp:
-    def __init__(self, root, study_time, break_time):
-        self.root = root
+    def __init__(self, study_time, break_time):
+        self.root = tk.Tk()
+        self.root.title("Minidoro")
+        self.root.config(bg='#e83a3a')
+        self.root.geometry("200x160")
         self.study_time = study_time * 60
         self.break_time = break_time * 60
         self.time_left = self.study_time
@@ -14,17 +17,19 @@ class TimerApp:
         self.round = 0
 
         # UI Elements
-        # self.label = tk.Label(root, text="Pomodoro Timer", font=("Arial", 20))
-        # self.label.pack(pady=10)
+        self.label = tk.Label(self.root, text="Pomodoro Timer", font=("Arial", 10), bg='#e83a3a', fg="white")
+        self.label.pack(pady=10)
 
-        self.timer_display = tk.Label(root, text="00:00:00", font=("Arial", 30), fg = 'white', bg = '#1c3d25')
+        self.timer_display = tk.Label(self.root, text="00:00:00", font=("Arial", 30), fg = 'white', bg = '#e83a3a')
         self.timer_display.pack(pady=10)
 
-        self.start_button = tk.Button(root, text="Start", command=self.start_timer, font=("Arial", 14))
+        self.start_button = tk.Button(self.root, text="Start", command=self.start_timer, font=("Arial", 14))
         self.start_button.pack(side=tk.LEFT, padx=10)
 
-        self.stop_button = tk.Button(root, text="Stop", command=self.stop_timer, font=("Arial", 14))
+        self.stop_button = tk.Button(self.root, text="Stop", command=self.stop_timer, font=("Arial", 14))
         self.stop_button.pack(side=tk.RIGHT, padx=10)
+
+        self.update_display()
 
     def start_timer(self):
         if not self.running:
@@ -44,6 +49,9 @@ class TimerApp:
             else:
                 self.play_sound()
                 self.switch_mode()
+    def update_display(self):
+        time_display = str(dt.timedelta(seconds=self.time_left))
+        self.timer_display.config(text=time_display)
 
     def switch_mode(self):
         if self.on_break:
