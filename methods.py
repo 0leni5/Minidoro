@@ -1,5 +1,6 @@
 import tkinter as tk
 from timer import TimerApp
+from settings import Settings as st
 
 class GUI:
     def __init__(self, setupWindow, callback):
@@ -9,14 +10,22 @@ class GUI:
         # self.setupWindow.geometry("200x200")
         self.setupWindow.config(bg="#e83a3a")
 
+        self.settingsButton = tk.Button(self.setupWindow, text="Settings", command=self.open_settings, font=("JetBrainsMono NFM Regular", 10))
+        self.settingsButton.grid(row=2, column=1)
+
         tk.Label(self.setupWindow, text="Study sessions duration (min): ", bg="#e83a3a", fg = "white", font=("JetBrainsMono NFM Regular", 10)).grid(row=0, column=0)
         self.setStudyTime = tk.Entry(self.setupWindow)
         self.setStudyTime.grid(row=0, column=1)
+
         tk.Label(self.setupWindow, text="Break sessions duration (min): ", bg="#e83a3a", fg = "white", font=("JetBrainsMono NFM Regular", 10)).grid(row=1, column=0)
         self.setBreakTime = tk.Entry(self.setupWindow)
         self.setBreakTime.grid(row=1, column=1)
+
         self.submitButton = tk.Button(self.setupWindow, text="Enter", command=self.submit, font=("JetBrainsMono NFM Regular", 10))
-        self.submitButton.grid(row=2, column=0, columnspan=2)
+        self.submitButton.grid(row=2, column=0)
+
+        self.settingsWindow = None
+
         self.setupWindow.bind("<Return>", self.submit)
 
     def submit(self, event=None):
@@ -28,3 +37,13 @@ class GUI:
             self.setupWindow.destroy()  # Close setup window
         except ValueError:
             print("Please enter valid numbers!")  # Handle invalid inputs
+
+    def open_settings(self):
+        if self.settingsWindow and self.settingsWindow.winfo_exists():
+            self.settingsWindow.lift()  # Bring window to front
+            self.settingsWindow.focus_force()  # Give it focus
+            return
+
+        self.settingsWindow = tk.Toplevel(self.setupWindow)
+        settings_window = st(self.settingsWindow)
+
