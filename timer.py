@@ -32,7 +32,15 @@ class TimerApp:
         self.stop_button = tk.Button(self.root, text="Stop", command=self.stop_timer, font=("JetBrainsMono NFM Regular", 10))
         self.stop_button.pack(side=tk.RIGHT, padx=10, pady=10)
 
+        self.root.bind("<space>", self.start_stop_keyboard_timer)
+
         self.update_display()
+
+    def start_stop_keyboard_timer(self, event=None):
+        if self.running:
+            self.stop_timer()
+        else:
+            self.start_timer()
 
     def start_timer(self):
         if not self.running:

@@ -7,7 +7,6 @@ def processValues(studyTime, breakTime):
 
 def main():
     setupWindow = tk.Tk()
-    setupWindow.title("Minidoro")
     pomo = GUI(setupWindow, processValues)
     setupWindow.mainloop()
 
