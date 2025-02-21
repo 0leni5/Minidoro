@@ -7,7 +7,7 @@ class GUI:
         self.sound = "beepshort.wav"
         self.bgcolor = "#e83a3a"
         self.textcolor = "white"
-        self.settings = [self.sound, self.bgcolor]
+        self.settings = [self.sound, self.bgcolor, self.textcolor]
 
         self.callback = callback
         self.setupWindow = setupWindow

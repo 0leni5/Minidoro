@@ -2,12 +2,14 @@ import datetime as dt
 import threading
 import tkinter as tk
 from playsound import playsound as ps
+from time import *
 
 class TimerApp:
     def __init__(self, study_time, break_time, settings):
         self.sound = settings[0]
         self.bgcolor = settings[1]
         self.textcolor = settings[2]
+
         self.root = tk.Tk()
         self.root.title("Minidoro")
         self.root.config(bg=self.bgcolor)
@@ -20,14 +22,18 @@ class TimerApp:
         self.round = 1
 
         # UI Elements
-        self.mainLabel = tk.Label(self.root, text="Pomodoro Timer", font=("JetBrainsMono NFM Regular", 15), bg=self.bgcolor, fg=self.textcolor)
+        self.mainLabel = tk.Label(self.root, text="Minidoro!", font=("JetBrainsMono NFM Regular", 15), bg=self.bgcolor, fg=self.textcolor)
         self.mainLabel.pack(pady=10)
 
-        self.timer_display = tk.Label(self.root, text="00:00:00", font=("digital-7", 30), fg = self.textcolor, bg = self.bgcolor)
+        self.timer_display = tk.Label(self.root, text="00:00:00", font=("digital-7 Mono", 30), fg = self.textcolor, bg = self.bgcolor)
         self.timer_display.pack(pady=10)
 
         self.roundLabel = tk.Label(self.root, text=f"Round {self.round}", font=("JetBrainsMono NFM Regular", 15), bg=self.bgcolor, fg=self.textcolor)
         self.roundLabel.pack(pady=10)
+
+        self.clock_display = tk.Label(self.root, font=("digital-7 Mono", 17), fg=self.textcolor,
+                                      bg=self.bgcolor)
+        self.clock_display.pack()
 
         self.start_button = tk.Button(self.root, text="Start", command=self.start_timer, font=("JetBrainsMono NFM Regular", 10))
         self.start_button.pack(side=tk.LEFT, padx=10, pady=10)
@@ -61,14 +67,22 @@ class TimerApp:
                 time_display = str(dt.timedelta(seconds=self.time_left))
                 self.timer_display.config(text=time_display)
                 self.time_left -= 1
+                # time_str = strftime("%H:%M")
+                # self.clock_display.config(text=time_str)
                 self.root.after(1000, self.update_timer)
             else:
                 self.play_sound()
                 self.switch_mode()
 
+    def clock(self):
+            time_str = strftime("%H:%M")
+            self.clock_display.config(text=time_str)
+            self.root.after(1000, self.clock)
+
     def update_display(self):
         time_display = str(dt.timedelta(seconds=self.time_left))
         self.timer_display.config(text=time_display)
+        self.clock()
 
     def switch_mode(self):
         if self.on_break:
