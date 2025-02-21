@@ -4,10 +4,13 @@ import tkinter as tk
 from playsound import playsound as ps
 
 class TimerApp:
-    def __init__(self, study_time, break_time):
+    def __init__(self, study_time, break_time, settings):
+        self.sound = settings[0]
+        self.bgcolor = settings[1]
+        self.textcolor = settings[2]
         self.root = tk.Tk()
         self.root.title("Minidoro")
-        self.root.config(bg='#e83a3a')
+        self.root.config(bg=self.bgcolor)
         self.root.geometry("200x250")
         self.study_time = study_time * 60
         self.break_time = break_time * 60
@@ -17,13 +20,13 @@ class TimerApp:
         self.round = 1
 
         # UI Elements
-        self.mainLabel = tk.Label(self.root, text="Pomodoro Timer", font=("JetBrainsMono NFM Regular", 15), bg='#e83a3a', fg="white")
+        self.mainLabel = tk.Label(self.root, text="Pomodoro Timer", font=("JetBrainsMono NFM Regular", 15), bg=self.bgcolor, fg=self.textcolor)
         self.mainLabel.pack(pady=10)
 
-        self.timer_display = tk.Label(self.root, text="00:00:00", font=("digital-7", 30), fg = 'white', bg = '#e83a3a')
+        self.timer_display = tk.Label(self.root, text="00:00:00", font=("digital-7", 30), fg = self.textcolor, bg = self.bgcolor)
         self.timer_display.pack(pady=10)
 
-        self.roundLabel = tk.Label(self.root, text=f"Round {self.round}", font=("JetBrainsMono NFM Regular", 15), bg='#e83a3a', fg="white")
+        self.roundLabel = tk.Label(self.root, text=f"Round {self.round}", font=("JetBrainsMono NFM Regular", 15), bg=self.bgcolor, fg=self.textcolor)
         self.roundLabel.pack(pady=10)
 
         self.start_button = tk.Button(self.root, text="Start", command=self.start_timer, font=("JetBrainsMono NFM Regular", 10))
@@ -81,4 +84,4 @@ class TimerApp:
         self.update_timer()
 
     def play_sound(self):
-        threading.Thread(target=lambda: ps("beepshort.wav"), daemon=True).start()
+        threading.Thread(target=lambda: ps(self.sound), daemon=True).start()
