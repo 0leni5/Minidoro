@@ -45,6 +45,9 @@ class TimerApp:
 
         self.update_display()
 
+        self.root.lift()  # Bring window to front
+        self.root.focus_force()  # Give it focus
+
     def start_stop_keyboard_timer(self, event=None):
         if self.running:
             self.stop_timer()
