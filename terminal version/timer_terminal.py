@@ -20,7 +20,7 @@ class Timer():
             print(display, end="")
             t.sleep(1)
             totalSeconds -= 1
-        ps('beepshort.wav')
+        ps('../beepshort.wav')
         self.breaktimer()
 
     def breaktimer(self):
@@ -33,6 +33,6 @@ class Timer():
             print(display, end="")
             t.sleep(1)
             totalSeconds -= 1
-        ps('beepshort.wav')
+        ps('../beepshort.wav')
         self.studytimer()
 
