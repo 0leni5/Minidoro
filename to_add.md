@@ -4,3 +4,7 @@ Features yet to add:
 - custom icon
 - make Minidoro an .exe file
 - error notif label
+- transparency:
+  - completely different layout (only timer and clock visible) (add to settings "display clock when in minimalistic mode)
+  - lock window
+  - pass through interactions
