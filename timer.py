@@ -30,7 +30,7 @@ class TimerApp:
         self.mainLabel = tk.Label(self.root, text="Minidoro!", font=("JetBrainsMono NFM Regular", 15), bg=self.bgcolor, fg=self.textcolor)
         self.mainLabel.pack(pady=10)
 
-        self.timer_display = tk.Label(self.root, text="00:00:00", font=("digital-7 Mono", 30), fg = self.textcolor, bg = self.bgcolor)
+        self.timer_display = tk.Label(self.root, text="0:00:00", font=("digital-7 Mono", 30), fg = self.textcolor, bg = self.bgcolor)
         self.timer_display.pack(padx=10, pady=10)
 
         self.roundLabel = tk.Label(self.root, text=f"Round {self.round}", font=("JetBrainsMono NFM Regular", 15), bg=self.bgcolor, fg=self.textcolor)
@@ -40,11 +40,11 @@ class TimerApp:
                                       bg=self.bgcolor)
         self.clock_display.pack()
 
-        button_width = 10
-        self.start_button = tk.Button(self.root, text="Start", command=self.start_timer, font=("JetBrainsMono NFM Regular", 10), width=button_width)
+        self.button_width = 10
+        self.start_button = tk.Button(self.root, text="Start", command=self.start_timer, font=("JetBrainsMono NFM Regular", 10), width=self.button_width)
         self.start_button.pack(pady=(10,0), padx=5)
 
-        self.stop_button = tk.Button(self.root, text="Stop", command=self.stop_timer, font=("JetBrainsMono NFM Regular", 10), width=button_width)
+        self.stop_button = tk.Button(self.root, text="Stop", command=self.stop_timer, font=("JetBrainsMono NFM Regular", 10), width=self.button_width)
         self.stop_button.pack(pady=(0,10), padx=5)
 
         self.minimalistic_button = tk.Button(self.root, text="Minimalistic", command=self.switch_minimalistic, font=("JetBrainsMono NFM Regular", 10))
@@ -124,6 +124,8 @@ class TimerApp:
 
     def switch_minimalistic(self):
         self.toggle_minimalistic = not self.toggle_minimalistic
+        x = self.root.winfo_width()
+        y = self.root.winfo_height()
         if self.toggle_minimalistic:
             # Make the window always on top and semi-transparent
             self.root.attributes("-topmost", True)  # Always on top
@@ -131,6 +133,7 @@ class TimerApp:
             
             # Hide window decorations
             self.root.overrideredirect(True)
+            # self.root.resizable(False, False)
 
             self.mainLabel.pack_forget()
             self.timer_display.pack_forget()
@@ -141,10 +144,17 @@ class TimerApp:
             self.minimalistic_button.pack_forget()
             
             self.timer_display.pack()
-            self.minimalistic_button.pack()
+            self.start_button.pack(side=tk.LEFT)
+            self.stop_button.pack(side=tk.LEFT)
+            self.minimalistic_button.pack(side=tk.LEFT)
+
+            self.start_button.config(bg=self.bgcolor, fg=self.textcolor, text=">", width=1)
+            self.stop_button.config(bg=self.bgcolor, fg=self.textcolor, text="||", width=1)
+            self.minimalistic_button.config(bg=self.bgcolor, fg=self.textcolor, text="M", width=1)
 
             # Update window size
-            self.root.update_idlself.root.geometry(self.root.winfo_width() + 'x' + self.root.winfo_height())  # Resize the window if neededetasks()  # Force an immediate update of the window layout
+            # self.root.update_idletasks()
+            self.root.geometry(f"{x}x100")
             self.root.geometry(f"{self.root.winfo_width()}x{self.root.winfo_height()}")  # Resize window if needed
 
         else:
@@ -155,8 +165,11 @@ class TimerApp:
             
             # Show window decorations
             self.root.overrideredirect(False)  # Restore borders and buttons
+            self.root.resizable(True, True)
 
             self.timer_display.pack_forget()
+            self.start_button.pack_forget()
+            self.stop_button.pack_forget()
             self.minimalistic_button.pack_forget()
 
             self.mainLabel.pack(pady=10)
@@ -167,5 +180,10 @@ class TimerApp:
             self.stop_button.pack(pady=(0,10), padx=5)
             self.minimalistic_button.pack(pady=10)
 
+            self.start_button.config(bg="white", fg="black", text="Start", width=self.button_width)
+            self.stop_button.config(bg="white", fg="black", text="Stop", width=self.button_width)
+            self.minimalistic_button.config(bg="white", fg="black", text="Minimalistic", width=self.button_width)
+
             self.root.update_idletasks()
+            self.root.geometry(f"{x}x{y}")
             self.root.geometry(f"{self.root.winfo_width()}x{self.root.winfo_height()}")  # Resize window if needed
