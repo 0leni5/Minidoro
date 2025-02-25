@@ -29,7 +29,7 @@ class Settings:
         self.select_color = None
 
         self.show_clock = False
-        self.clockM_button = tk.Button(self.settingsWindow, text=f"Show clock in minimalistic mode: {self.show_clock}", font=("JetBrainsMono NFM Regular", 10), command=self.toggleClockM)
+        self.clockM_button = tk.Button(self.settingsWindow, text=f"Show clock in minimalistic mode: {self.show_clock}", font=("JetBrainsMono NFM Regular", 10), command=self.toggleClockM, width=30)
         self.clockM_button.grid(row=1, column=0, sticky="ew", padx=5)
 
         self.color_button = tk.Button(self.settingsWindow, text=f"Timer background color: {self.bgcolor}", font=("JetBrainsMono NFM Regular", 10), command=lambda: self.colorPicker("background"))
