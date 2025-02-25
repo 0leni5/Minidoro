@@ -7,7 +7,8 @@ class GUI:
         self.sound = "chime_2.wav"
         self.bgcolor = "#e83a3a"
         self.textcolor = "white"
-        self.settings = [self.sound, self.bgcolor, self.textcolor]
+        self.show_clock = False
+        self.settings = [self.sound, self.show_clock, self.bgcolor, self.textcolor]
 
         self.callback = callback
         self.setupWindow = setupWindow

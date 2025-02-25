@@ -12,8 +12,9 @@ class TimerApp:
         # listener = keyboard.Listener(on_press=self.on_hotkey)
         # listener.start()
         self.sound = settings[0]
-        self.bgcolor = settings[1]
-        self.textcolor = settings[2]
+        self.show_clock = settings[1]
+        self.bgcolor = settings[2]
+        self.textcolor = settings[3]
 
         self.root = tk.Tk()
         self.root.title("Minidoro")
@@ -144,6 +145,8 @@ class TimerApp:
             self.minimalistic_button.pack_forget()
             
             self.timer_display.pack()
+            if self.show_clock:
+                self.clock_display.pack()
             self.start_button.pack(side=tk.LEFT)
             self.stop_button.pack(side=tk.LEFT)
             self.minimalistic_button.pack(side=tk.LEFT)
@@ -168,6 +171,8 @@ class TimerApp:
             self.root.resizable(True, True)
 
             self.timer_display.pack_forget()
+            if self.show_clock:
+                self.clock_display.pack_forget()
             self.start_button.pack_forget()
             self.stop_button.pack_forget()
             self.minimalistic_button.pack_forget()

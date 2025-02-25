@@ -5,9 +5,11 @@ import threading
 
 class Settings:
     def __init__(self, settingsWindow, callback):
-        self.bgcolor = "#e83a3a"
-        self.textcolor = "white"
-        self.default_settings = ["AE86 Chime", "#e83a3a", "white"]
+        self.default_settings = ["AE86 Chime", False, "#e83a3a", "white"]
+        self.current_sound = self.default_settings[0]
+        self.show_clock = self.default_settings[1]
+        self.bgcolor = self.default_settings[2]
+        self.textcolor = self.default_settings[3]
         self.callback = callback
         self.sounddic = {
             "Beep": "beepshort.wav",
@@ -19,7 +21,6 @@ class Settings:
         self.settingsWindow.title("Minidoro")
         self.settingsWindow.config(bg=self.bgcolor)
 
-        self.current_sound = "AE86 Chime"
         self.selected_sound = tk.Button(self.settingsWindow, text=self.current_sound, command=self.chooseSound, font=("JetBrainsMono NFM Regular", 10))
         self.selected_sound.grid(row=0, column=0, sticky="ew", padx=5, pady=(5,0))
 
@@ -27,23 +28,27 @@ class Settings:
         self.list = None
         self.select_color = None
 
+        self.show_clock = False
+        self.clockM_button = tk.Button(self.settingsWindow, text=f"Show clock in minimalistic mode: {self.show_clock}", font=("JetBrainsMono NFM Regular", 10), command=self.toggleClockM)
+        self.clockM_button.grid(row=1, column=0, sticky="ew", padx=5)
+
         self.color_button = tk.Button(self.settingsWindow, text=f"Timer background color: {self.bgcolor}", font=("JetBrainsMono NFM Regular", 10), command=lambda: self.colorPicker("background"))
-        self.color_button.grid(row=1, column=0, sticky="ew", padx=5)
+        self.color_button.grid(row=2, column=0, sticky="ew", padx=5)
 
         self.textcolor_button = tk.Button(self.settingsWindow, text=f"Timer text color: {self.textcolor}",
                                       font=("JetBrainsMono NFM Regular", 10),
                                       command=lambda: self.colorPicker("text"))
-        self.textcolor_button.grid(row=2, column=0, sticky="ew", padx=5, pady=(0,5))
+        self.textcolor_button.grid(row=3, column=0, sticky="ew", padx=5, pady=(0,5))
 
         self.example_text = tk.Label(self.settingsWindow, text="The timer will look like this.", font=("JetBrainsMono NFM Regular", 10), bg=self.bgcolor, fg=self.textcolor, borderwidth=2, relief="solid")
-        self.example_text.grid(row=3, column=0, padx = 5, pady=10)
+        self.example_text.grid(row=4, column=0, padx = 5, pady=10)
 
         self.reset_settings = tk.Button(self.settingsWindow, text="Reset", font=("JetBrainsMono NFM Regular", 10),
                                        command=self.resetSettings, width=15)
-        self.reset_settings.grid(row=4, column=0, padx=5, pady=(5, 5))
+        self.reset_settings.grid(row=5, column=0, padx=5, pady=(5, 5))
 
         self.save_settings = tk.Button(self.settingsWindow, text="Save", font=("JetBrainsMono NFM Regular", 10), command=self.saveSettings, width=15)
-        self.save_settings.grid(row=5, column=0, padx=5, pady=(20, 5))
+        self.save_settings.grid(row=6, column=0, padx=5, pady=(20, 5))
 
     def chooseSound(self):
         if self.select_sound and self.select_sound.winfo_exists():
@@ -76,6 +81,10 @@ class Settings:
         sound = self.sounddic[self.list.get(self.list.curselection())]
         threading.Thread(target=lambda: ps(sound), daemon=True).start()
 
+    def toggleClockM(self):
+        self.show_clock = not self.show_clock
+        self.clockM_button.config(text=f"Show clock in minimalistic mode: {self.show_clock}")
+
     def colorPicker(self, target):
         _, color = colorchooser.askcolor(title="Choose background color")
         if color is None:
@@ -95,12 +104,13 @@ class Settings:
             self.settingsWindow.focus_force()  # Give it focus
 
     def resetSettings(self):
-        self.bgcolor = self.default_settings[1]
-        self.textcolor = self.default_settings[2]
+        self.show_clock = self.default_settings[1]
+        self.bgcolor = self.default_settings[2]
+        self.textcolor = self.default_settings[3]
 
         self.example_text.config(bg=self.bgcolor, fg=self.textcolor)
 
     def saveSettings(self):
-        settings = [self.current_sound, self.bgcolor, self.textcolor]
+        settings = [self.current_sound, self.show_clock, self.bgcolor, self.textcolor]
         self.callback(settings)
         self.settingsWindow.destroy()
