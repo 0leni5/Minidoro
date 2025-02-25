@@ -65,6 +65,7 @@ class Settings:
         self.list.insert(2, "Chime 1")
         self.list.insert(3, "AE86 Chime")
         self.list.insert(4, "Chime 3")
+        self.list.select_set(2)
 
         play_sound = tk.Button(self.select_sound, font=("JetBrainsMono NFM Regular", 10), command=self.playSound, text="Play")
         play_sound.pack(padx=5, pady=(5,0), fill="x")
