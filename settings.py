@@ -19,7 +19,7 @@ class Settings:
         self.settingsWindow.title("Minidoro")
         self.settingsWindow.config(bg=self.bgcolor)
 
-        self.current_sound = "Beep"
+        self.current_sound = "AE86 Chime"
         self.selected_sound = tk.Button(self.settingsWindow, text=self.current_sound, command=self.chooseSound, font=("JetBrainsMono NFM Regular", 10))
         self.selected_sound.grid(row=0, column=0, sticky="ew", padx=5, pady=(5,0))
 

@@ -4,6 +4,7 @@ import tkinter as tk
 from playsound import playsound as ps
 from time import *
 from pynput import keyboard
+import pyxhook
 
 class TimerApp:
     def __init__(self, study_time, break_time, settings):
@@ -17,7 +18,7 @@ class TimerApp:
         self.root = tk.Tk()
         self.root.title("Minidoro")
         self.root.config(bg=self.bgcolor)
-        self.root.geometry("200x250")
+        # self.root.geometry("200x300")
         self.study_time = study_time * 60
         self.break_time = break_time * 60
         self.time_left = self.study_time
@@ -27,26 +28,26 @@ class TimerApp:
 
         # UI Elements
         self.mainLabel = tk.Label(self.root, text="Minidoro!", font=("JetBrainsMono NFM Regular", 15), bg=self.bgcolor, fg=self.textcolor)
-        self.mainLabel.pack(pady=10)
+        self.mainLabel.grid(row=0, column=0, columnspan=2, pady=10)
 
         self.timer_display = tk.Label(self.root, text="00:00:00", font=("digital-7 Mono", 30), fg = self.textcolor, bg = self.bgcolor)
-        self.timer_display.pack(pady=10)
+        self.timer_display.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
 
         self.roundLabel = tk.Label(self.root, text=f"Round {self.round}", font=("JetBrainsMono NFM Regular", 15), bg=self.bgcolor, fg=self.textcolor)
-        self.roundLabel.pack(pady=10)
+        self.roundLabel.grid(row=2, column=0, columnspan=2, pady=10)
 
         self.clock_display = tk.Label(self.root, font=("digital-7 Mono", 17), fg=self.textcolor,
                                       bg=self.bgcolor)
-        self.clock_display.pack()
+        self.clock_display.grid(row=3, column=0, columnspan=2)
 
         self.start_button = tk.Button(self.root, text="Start", command=self.start_timer, font=("JetBrainsMono NFM Regular", 10))
-        self.start_button.pack(side=tk.LEFT, padx=10, pady=10)
+        self.start_button.grid(row=4, column=0, pady=10)
 
         self.stop_button = tk.Button(self.root, text="Stop", command=self.stop_timer, font=("JetBrainsMono NFM Regular", 10))
-        self.stop_button.pack(side=tk.RIGHT, padx=10, pady=10)
+        self.stop_button.grid(row=4, column=1, pady=10)
 
         self.minimalistic_button = tk.Button(self.root, text="Minimalistic", command=self.switch_minimalistic, font=("JetBrainsMono NFM Regular", 10))
-        self.minimalistic_button.pack(side=tk.RIGHT, padx=10, pady=10)
+        self.minimalistic_button.grid(row=5, column=0, pady=10)
 
         self.root.bind("<space>", self.start_stop_keyboard_timer)
 
@@ -54,6 +55,12 @@ class TimerApp:
 
         self.root.lift()  # Bring window to front
         self.root.focus_force()  # Give it focus
+
+        # x = self.root.winfo_width()
+        # y = self.root.winfo_height()
+        # geometry = f"{x}x{y}"
+        # self.root.geometry(geometry)
+        
 
     def start_stop_keyboard_timer(self, event=None):
         if self.running:
@@ -117,30 +124,27 @@ class TimerApp:
     def switch_minimalistic(self):
         self.toggle_minimalistic = not self.toggle_minimalistic
         if self.toggle_minimalistic:
-            # self.root.attributes("-topmost", True)  # Always on top
-            # self.root.attributes("-alpha", 0.5)  # 50% transparency
-            # self.root.wm_attributes("-type", "splash")  # Ignore interactions, let clicks pass through
-            # self.root.wm_attributes("-transparent", True)
-
             # Make the window always on top and semi-transparent
             self.root.attributes("-topmost", True)  # Always on top
             self.root.attributes("-alpha", 0.5)  # 50% transparency
-        
-            # Make the window click-through using X11 "splash" type
-            self.root.wm_attributes("-type", "splash")  # Non-interactive
-        
-            # Hide window decorations (no borders, no buttons, no resize)
+            
+            # Hide window decorations
             self.root.overrideredirect(True)
-        elif not self.toggle_minimalistic:
-            # self.root.attributes("-topmost", False)
-            # self.root.attributes("-alpha", 1)
-            # self.root.wm_attributes("-type", "normal")
-            # self.root.wm_attributes("-transparent", False)
 
-            # Restore the window back to full opacity and interactivity
+            self.start_button.grid_forget()
+            self.stop_button.grid_forget()
+            self.mainLabel.grid_forget()   
+            self.root.geometry("200x150")    
+        else:
+            # Restore the window back to normal
             self.root.attributes("-topmost", False)  # Remove "always on top"
             self.root.attributes("-alpha", 1)  # Full opacity
             self.root.wm_attributes("-type", "normal")  # Normal window type
-        
-            # Show the window decorations again (resizable and interactive)
-            self.root.overrideredirect(False)
+            
+            # Show window decorations
+            self.root.overrideredirect(False)  # Restore borders and buttons
+
+            self.mainLabel.grid(row=0, column=0, columnspan=2, pady=10)
+            self.start_button.grid(row=4, column=0, pady=10)
+            self.stop_button.grid(row=4, column=1, pady=10)
+            self.root.geometry("200x300")
