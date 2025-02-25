@@ -3,9 +3,13 @@ import threading
 import tkinter as tk
 from playsound import playsound as ps
 from time import *
+from pynput import keyboard
 
 class TimerApp:
     def __init__(self, study_time, break_time, settings):
+        self.toggle_minimalistic = False
+        # listener = keyboard.Listener(on_press=self.on_hotkey)
+        # listener.start()
         self.sound = settings[0]
         self.bgcolor = settings[1]
         self.textcolor = settings[2]
@@ -40,6 +44,9 @@ class TimerApp:
 
         self.stop_button = tk.Button(self.root, text="Stop", command=self.stop_timer, font=("JetBrainsMono NFM Regular", 10))
         self.stop_button.pack(side=tk.RIGHT, padx=10, pady=10)
+
+        self.minimalistic_button = tk.Button(self.root, text="Minimalistic", command=self.switch_minimalistic, font=("JetBrainsMono NFM Regular", 10))
+        self.minimalistic_button.pack(side=tk.RIGHT, padx=10, pady=10)
 
         self.root.bind("<space>", self.start_stop_keyboard_timer)
 
@@ -102,3 +109,38 @@ class TimerApp:
 
     def play_sound(self):
         threading.Thread(target=lambda: ps(self.sound), daemon=True).start()
+
+    def on_hotkey(key):
+        if key == keyboard.Key.M:  # F1 key detected
+            self.toggle_minimalistic()
+
+    def switch_minimalistic(self):
+        self.toggle_minimalistic = not self.toggle_minimalistic
+        if self.toggle_minimalistic:
+            # self.root.attributes("-topmost", True)  # Always on top
+            # self.root.attributes("-alpha", 0.5)  # 50% transparency
+            # self.root.wm_attributes("-type", "splash")  # Ignore interactions, let clicks pass through
+            # self.root.wm_attributes("-transparent", True)
+
+            # Make the window always on top and semi-transparent
+            self.root.attributes("-topmost", True)  # Always on top
+            self.root.attributes("-alpha", 0.5)  # 50% transparency
+        
+            # Make the window click-through using X11 "splash" type
+            self.root.wm_attributes("-type", "splash")  # Non-interactive
+        
+            # Hide window decorations (no borders, no buttons, no resize)
+            self.root.overrideredirect(True)
+        elif not self.toggle_minimalistic:
+            # self.root.attributes("-topmost", False)
+            # self.root.attributes("-alpha", 1)
+            # self.root.wm_attributes("-type", "normal")
+            # self.root.wm_attributes("-transparent", False)
+
+            # Restore the window back to full opacity and interactivity
+            self.root.attributes("-topmost", False)  # Remove "always on top"
+            self.root.attributes("-alpha", 1)  # Full opacity
+            self.root.wm_attributes("-type", "normal")  # Normal window type
+        
+            # Show the window decorations again (resizable and interactive)
+            self.root.overrideredirect(False)
