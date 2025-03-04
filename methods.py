@@ -8,7 +8,8 @@ class GUI:
         self.bgcolor = "#e83a3a"
         self.textcolor = "white"
         self.show_clock = False
-        self.settings = [self.sound, self.show_clock, self.bgcolor, self.textcolor]
+        self.manual_toggle = "Off"
+        self.settings = [self.sound, self.show_clock, self.bgcolor, self.textcolor, self.manual_toggle]
 
         self.callback = callback
         self.setupWindow = setupWindow

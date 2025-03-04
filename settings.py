@@ -5,11 +5,12 @@ import threading
 
 class Settings:
     def __init__(self, settingsWindow, callback):
-        self.default_settings = ["AE86 Chime", False, "#e83a3a", "white"]
+        self.default_settings = ["AE86 Chime", False, "#e83a3a", "white", "Off"]
         self.current_sound = self.default_settings[0]
         self.show_clock = self.default_settings[1]
         self.bgcolor = self.default_settings[2]
         self.textcolor = self.default_settings[3]
+        self.manual_toggle = self.default_settings[4]
         self.callback = callback
         self.sounddic = {
             "Beep": "beepshort.wav",
@@ -32,23 +33,26 @@ class Settings:
         self.clockM_button = tk.Button(self.settingsWindow, text=f"Show clock in minimalistic mode: {self.show_clock}", font=("JetBrainsMono NFM Regular", 10), command=self.toggleClockM, width=30)
         self.clockM_button.grid(row=1, column=0, sticky="ew", padx=5)
 
+        self.manual_start_stop = tk.Button(self.settingsWindow, text=f"Manual START/STOP: {self.manual_toggle}", font=("JetBrainsMono NFM Regular", 10), command=self.manualSSToggle)
+        self.manual_start_stop.grid(row=2, column=0, padx=5, sticky='ew')
+
         self.color_button = tk.Button(self.settingsWindow, text=f"Timer background color: {self.bgcolor}", font=("JetBrainsMono NFM Regular", 10), command=lambda: self.colorPicker("background"))
-        self.color_button.grid(row=2, column=0, sticky="ew", padx=5)
+        self.color_button.grid(row=3, column=0, sticky="ew", padx=5)
 
         self.textcolor_button = tk.Button(self.settingsWindow, text=f"Timer text color: {self.textcolor}",
                                       font=("JetBrainsMono NFM Regular", 10),
                                       command=lambda: self.colorPicker("text"))
-        self.textcolor_button.grid(row=3, column=0, sticky="ew", padx=5, pady=(0,5))
+        self.textcolor_button.grid(row=4, column=0, sticky="ew", padx=5)
 
         self.example_text = tk.Label(self.settingsWindow, text="The timer will look like this.", font=("JetBrainsMono NFM Regular", 10), bg=self.bgcolor, fg=self.textcolor, borderwidth=2, relief="solid")
-        self.example_text.grid(row=4, column=0, padx = 5, pady=10)
+        self.example_text.grid(row=5, column=0, padx = 5, pady=10)
 
         self.reset_settings = tk.Button(self.settingsWindow, text="Reset", font=("JetBrainsMono NFM Regular", 10),
                                        command=self.resetSettings, width=15)
-        self.reset_settings.grid(row=5, column=0, padx=5, pady=(5, 5))
+        self.reset_settings.grid(row=6, column=0, padx=5, pady=(5, 5))
 
         self.save_settings = tk.Button(self.settingsWindow, text="Save", font=("JetBrainsMono NFM Regular", 10), command=self.saveSettings, width=15)
-        self.save_settings.grid(row=6, column=0, padx=5, pady=(20, 5))
+        self.save_settings.grid(row=7, column=0, padx=5, pady=(20, 5))
 
     def chooseSound(self):
         if self.select_sound and self.select_sound.winfo_exists():
@@ -111,7 +115,15 @@ class Settings:
 
         self.example_text.config(bg=self.bgcolor, fg=self.textcolor)
 
+    def manualSSToggle(self):
+        if self.manual_toggle == "On":
+            self.manual_toggle = "Off"
+            self.manual_start_stop.config(text=f"Manual START/STOP: {self.manual_toggle}")
+        else:
+            self.manual_toggle = "On"
+            self.manual_start_stop.config(text=f"Manual START/STOP: {self.manual_toggle}")
+
     def saveSettings(self):
-        settings = [self.current_sound, self.show_clock, self.bgcolor, self.textcolor]
+        settings = [self.current_sound, self.show_clock, self.bgcolor, self.textcolor, self.manual_toggle]
         self.callback(settings)
         self.settingsWindow.destroy()

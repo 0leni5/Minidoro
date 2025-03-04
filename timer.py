@@ -15,6 +15,8 @@ class TimerApp:
         self.show_clock = settings[1]
         self.bgcolor = settings[2]
         self.textcolor = settings[3]
+        self.manual_toggle = settings[4]
+        self.waiting_for_manual_toggle = None
 
         self.root = tk.Tk()
         self.root.title("Minidoro")
@@ -65,16 +67,34 @@ class TimerApp:
         
 
     def start_stop_keyboard_timer(self, event=None):
-        if self.running:
+        if self.waiting_for_manual_toggle:  
+            # Resume the timer in the next mode when manually confirmed
+            self.waiting_for_manual_toggle = False
+            self.switch_mode()
+            self.start_timer()
+        elif self.running:
             self.stop_timer()
         else:
             self.start_timer()
 
     def start_timer(self):
         if not self.running:
-            self.mainLabel.config(text=f"Focus time!")
-            self.running = True
-            self.update_timer()
+            if self.waiting_for_manual_toggle:
+                self.waiting_for_manual_toggle = False
+                self.switch_mode()
+                if self.on_break:
+                    self.mainLabel.config(text=f"Break time!")
+                else:
+                    self.mainLabel.config(text=f"Focus time!")
+                self.running = True
+                self.update_timer()
+            else:
+                if self.on_break:
+                    self.mainLabel.config(text=f"Break time!")
+                else:
+                    self.mainLabel.config(text=f"Focus time!")
+                self.running = True
+                self.update_timer()
 
     def stop_timer(self):
         self.mainLabel.config(text=f"Timer stopped")
@@ -91,7 +111,12 @@ class TimerApp:
                 self.root.after(1000, self.update_timer)
             else:
                 self.play_sound()
-                self.switch_mode()
+                if self.manual_toggle == "Off":
+                    self.switch_mode()
+                else:
+                    self.waiting_for_manual_toggle = True  # Enable manual start/stop mode
+                    self.running = False  # Stop the automatic countdown
+                    self.mainLabel.config(text="Break time!")
 
     def clock(self):
             time_str = strftime("%H:%M")
