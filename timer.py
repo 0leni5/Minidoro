@@ -146,7 +146,8 @@ class TimerApp:
 
     def on_hotkey(key):
         if key == keyboard.Key.M:  # F1 key detected
-            self.toggle_minimalistic()
+            # self.toggle_minimalistic()
+            pass
 
     def switch_minimalistic(self):
         self.toggle_minimalistic = not self.toggle_minimalistic
@@ -189,7 +190,6 @@ class TimerApp:
             # Restore the window back to normal
             self.root.attributes("-topmost", False)  # Remove "always on top"
             self.root.attributes("-alpha", 1)  # Full opacity
-            self.root.wm_attributes("-type", "normal")  # Normal window type
             
             # Show window decorations
             self.root.overrideredirect(False)  # Restore borders and buttons
