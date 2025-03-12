@@ -51,7 +51,7 @@ class TimerApp:
         self.stop_button.pack(pady=(0,10), padx=5)
 
         self.minimalistic_button = tk.Button(self.root, text="Minimalistic", command=self.switch_minimalistic, font=("JetBrainsMono NFM Regular", 10))
-        self.minimalistic_button.pack(pady=10)
+        # self.minimalistic_button.pack(pady=10)
 
         self.root.bind("<space>", self.start_stop_keyboard_timer)
 
