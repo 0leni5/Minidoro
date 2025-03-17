@@ -4,7 +4,7 @@ from settings import Settings as st
 
 class GUI:
     def __init__(self, setupWindow, callback):
-        self.sound = "chime_2.wav"
+        self.sound = r"C:\Programowanie\Python\Minidoro\chime_2.wav"
         self.bgcolor = "#e83a3a"
         self.textcolor = "white"
         self.show_clock = False

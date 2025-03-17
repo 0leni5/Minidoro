@@ -13,10 +13,10 @@ class Settings:
         self.manual_toggle = self.default_settings[4]
         self.callback = callback
         self.sounddic = {
-            "Beep": "beepshort.wav",
-            "Chime 1":"chime_1.wav",
-            "AE86 Chime":"chime_2.wav",
-            "Chime 3":"chime_3.wav"
+            "Beep": r"C:\Programowanie\Python\Minidoro\beepshort.wav",
+            "Chime 1":r"C:\Programowanie\Python\Minidoro\chime_1.wav",
+            "AE86 Chime":r"C:\Programowanie\Python\Minidoro\chime_2.wav",
+            "Chime 3":r"C:\Programowanie\Python\Minidoro\chime_3.wav"
         }
         self.settingsWindow = settingsWindow
         self.settingsWindow.title("Minidoro")
